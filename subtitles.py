@@ -6,19 +6,30 @@ from random import randint
 import re
 import time
 from datetime import datetime
+import os, random
 
 show_lines = 15
+files_dir = "./files"
 
+logging.basicConfig(level=logging.DEBUG)
 
-logging.basicConfig(level=logging.INFO)
+#if len(sys.argv)!= 3 :
+#   print "usage: subtitles.py <file_ru> <file_eng>"
+#   exit()
 
-if len(sys.argv)!= 3 :
-   print "usage: subtitles.py <file_ru> <file_eng>"
+file_name = random.choice(os.listdir(files_dir))
+mObj = re.match(r'(.*)_(ru|en)\.srt',file_name,re.M|re.I)
+if not mObj:
    exit()
 
-file_ru = open(sys.argv[1]);
-file_en = open(sys.argv[2]);
+file_name_ru = os.path.join(files_dir,mObj.group(1)+"_ru.srt")
+file_name_en = os.path.join(files_dir,mObj.group(1)+"_en.srt")
 
+logging.debug("file_ru=%s"%file_name_ru)
+logging.debug("file_en=%s"%file_name_en)
+
+file_ru = open(file_name_ru)
+file_en = open(file_name_en)
 
 r_size = 0;
 for line in file_ru:
